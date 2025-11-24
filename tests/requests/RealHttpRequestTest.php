@@ -34,7 +34,7 @@ final class RealHttpRequestTest extends TestCase
     }
 
     #[Test]
-    public function it_creates_get_request_from_superglobals(): void
+    public function creates_get_request_from_superglobals(): void
     {
         $this->setServer('GET', '/foo?x=1');
         $_GET = ['x' => '1'];
@@ -85,7 +85,7 @@ final class RealHttpRequestTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_when_request_method_missing(): void
+    public function throws_when_request_method_missing(): void
     {
         unset($_SERVER['REQUEST_METHOD']);
         $_SERVER['REQUEST_URI'] = '/x';
@@ -95,7 +95,7 @@ final class RealHttpRequestTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_when_request_uri_missing(): void
+    public function throws_when_request_uri_missing(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
         unset($_SERVER['REQUEST_URI']);
@@ -105,7 +105,7 @@ final class RealHttpRequestTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_on_unsupported_request_method(): void
+    public function throws_on_unsupported_request_method(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'TRACE';
         $_SERVER['REQUEST_URI'] = '/';

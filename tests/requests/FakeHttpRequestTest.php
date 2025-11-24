@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 final class FakeHttpRequestTest extends TestCase
 {
     #[Test]
-    public function it_creates_get_request_with_parameters(): void
+    public function creates_get_request_with_parameters(): void
     {
         $request = FakeHttpRequest::get('/foo', ['id' => '42', 'q' => 'x']);
 
