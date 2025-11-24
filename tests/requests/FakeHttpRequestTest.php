@@ -3,14 +3,12 @@
 namespace spriebsch\http;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(FakeHttpRequest::class)]
 final class FakeHttpRequestTest extends TestCase
 {
-    #[Test]
-    public function creates_get_request_with_parameters(): void
+    public function test_creates_get_request_with_parameters(): void
     {
         $request = FakeHttpRequest::get('/foo', ['id' => '42', 'q' => 'x']);
 
@@ -24,8 +22,7 @@ final class FakeHttpRequestTest extends TestCase
         self::assertFalse($request->hasParameter('missing'));
     }
 
-    #[Test]
-    public function head_request_is_head_and_considered_get(): void
+    public function test_head_request_is_head_and_considered_get(): void
     {
         $request = FakeHttpRequest::head('/status');
 
@@ -34,8 +31,7 @@ final class FakeHttpRequestTest extends TestCase
         self::assertFalse($request->isPost());
     }
 
-    #[Test]
-    public function post_without_body_returns_empty_body(): void
+    public function test_post_without_body_returns_empty_body(): void
     {
         $request = FakeHttpRequest::post('/submit');
 
@@ -43,8 +39,7 @@ final class FakeHttpRequestTest extends TestCase
         self::assertSame('', $request->body());
     }
 
-    #[Test]
-    public function post_with_body_returns_body(): void
+    public function test_post_with_body_returns_body(): void
     {
         $request = FakeHttpRequest::postWithBody('/submit', 'payload');
 
@@ -53,8 +48,7 @@ final class FakeHttpRequestTest extends TestCase
         self::assertSame([], $request->formData());
     }
 
-    #[Test]
-    public function post_with_form_data_sets_form_data_and_has_empty_body(): void
+    public function test_post_with_form_data_sets_form_data_and_has_empty_body(): void
     {
         $request = FakeHttpRequest::postWithFormData('/submit', ['token' => 'abc', 'count' => 3]);
 
@@ -63,8 +57,7 @@ final class FakeHttpRequestTest extends TestCase
         self::assertSame('', $request->body());
     }
 
-    #[Test]
-    public function from_creates_post_request_with_parameters_as_form_data(): void
+    public function test_from_creates_post_request_with_parameters_as_form_data(): void
     {
         $request = FakeHttpRequest::from(RequestMethod::POST, new UrlPath('/save'), ['a' => 1, 'b' => 2], 'x');
 
@@ -77,8 +70,7 @@ final class FakeHttpRequestTest extends TestCase
         self::assertSame('x', $request->body());
     }
 
-    #[Test]
-    public function from_throws_when_non_post_request_has_body(): void
+    public function test_from_throws_when_non_post_request_has_body(): void
     {
         $this->expectException(HttpException::class);
 
@@ -86,8 +78,7 @@ final class FakeHttpRequestTest extends TestCase
         FakeHttpRequest::from(RequestMethod::GET, new UrlPath('/x'), [], 'nope');
     }
 
-    #[Test]
-    public function body_is_not_available_on_get_or_head(): void
+    public function test_body_is_not_available_on_get_or_head(): void
     {
         $this->expectException(HttpException::class);
 
@@ -96,8 +87,7 @@ final class FakeHttpRequestTest extends TestCase
         $request->body();
     }
 
-    #[Test]
-    public function parameter_as_bool_uses_php_truthiness(): void
+    public function test_parameter_as_bool_uses_php_truthiness(): void
     {
         $request = FakeHttpRequest::get('/flags', ['on' => 1, 'off' => 0]);
 

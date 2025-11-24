@@ -3,7 +3,6 @@
 namespace spriebsch\http;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TemporaryRedirectHttpResponse::class)]
@@ -11,8 +10,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(RedirectHttpResponse::class)]
 final class RedirectHttpResponseTest extends TestCase
 {
-    #[Test]
-    public function temporary_redirect_sets_location_header_and_status_code(): void
+    public function test_temporary_redirect_sets_location_header_and_status_code(): void
     {
         $response = new TemporaryRedirectHttpResponse('target');
 
@@ -21,8 +19,7 @@ final class RedirectHttpResponseTest extends TestCase
         self::assertSame('', $response->content());
     }
 
-    #[Test]
-    public function permanent_redirect_sets_location_header_and_status_code(): void
+    public function test_permanent_redirect_sets_location_header_and_status_code(): void
     {
         $response = new PermanentRedirectHttpResponse('elsewhere');
 

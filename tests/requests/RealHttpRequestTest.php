@@ -3,7 +3,6 @@
 namespace spriebsch\http;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(RealHttpRequest::class)]
@@ -33,8 +32,7 @@ final class RealHttpRequestTest extends TestCase
         $_SERVER['REQUEST_URI'] = $uri;
     }
 
-    #[Test]
-    public function creates_get_request_from_superglobals(): void
+    public function test_creates_get_request_from_superglobals(): void
     {
         $this->setServer('GET', '/foo?x=1');
         $_GET = ['x' => '1'];
@@ -49,8 +47,7 @@ final class RealHttpRequestTest extends TestCase
         self::assertSame('1', $request->parameterAsString('x'));
     }
 
-    #[Test]
-    public function head_request_is_head_and_considered_get_from_superglobals(): void
+    public function test_head_request_is_head_and_considered_get_from_superglobals(): void
     {
         $this->setServer('HEAD', '/status');
         $_GET = [];
@@ -66,8 +63,7 @@ final class RealHttpRequestTest extends TestCase
         $request->body();
     }
 
-    #[Test]
-    public function post_request_uses_post_data_and_body_is_empty_in_cli(): void
+    public function test_post_request_uses_post_data_and_body_is_empty_in_cli(): void
     {
         $this->setServer('POST', '/submit?track=1');
         $_GET = ['track' => '1'];
@@ -84,8 +80,7 @@ final class RealHttpRequestTest extends TestCase
         self::assertSame(1, $request->parameterAsInt('track'));
     }
 
-    #[Test]
-    public function throws_when_request_method_missing(): void
+    public function test_throws_when_request_method_missing(): void
     {
         unset($_SERVER['REQUEST_METHOD']);
         $_SERVER['REQUEST_URI'] = '/x';
@@ -94,8 +89,7 @@ final class RealHttpRequestTest extends TestCase
         RealHttpRequest::fromSuperglobals();
     }
 
-    #[Test]
-    public function throws_when_request_uri_missing(): void
+    public function test_throws_when_request_uri_missing(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
         unset($_SERVER['REQUEST_URI']);
@@ -104,8 +98,7 @@ final class RealHttpRequestTest extends TestCase
         RealHttpRequest::fromSuperglobals();
     }
 
-    #[Test]
-    public function throws_on_unsupported_request_method(): void
+    public function test_throws_on_unsupported_request_method(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'TRACE';
         $_SERVER['REQUEST_URI'] = '/';
