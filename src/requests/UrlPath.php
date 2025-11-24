@@ -11,10 +11,13 @@ class UrlPath
         }
 
         if (str_contains($this->path, '?')) {
-            $this->path = substr($this->path, 0, strpos($this->path, '?'));
+            $pos = strpos($this->path, '?');
+            if ($pos !== false) {
+                $this->path = substr($this->path, 0, $pos);
+            }
         }
 
-        if (str_ends_with($this->path, '/')) {
+        if (str_ends_with($this->path, '/') && $this->path !== '/') {
             $this->path = substr($this->path, 0, -1);
         }
 
