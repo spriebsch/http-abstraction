@@ -1,3 +1,3 @@
 # HTTP
 
-HTTP request and response with built-in test doubles.
+Lightweight HTTP request and response abstraction with built-in test doubles.
