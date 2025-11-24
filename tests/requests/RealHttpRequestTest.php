@@ -40,11 +40,11 @@ final class RealHttpRequestTest extends TestCase
 
         $request = RealHttpRequest::fromSuperglobals();
 
-        self::assertTrue($request->isGet());
-        self::assertFalse($request->isPost());
-        self::assertSame('/foo', $request->path()->asString());
-        self::assertTrue($request->hasParameter('x'));
-        self::assertSame('1', $request->parameterAsString('x'));
+        $this->assertTrue($request->isGet());
+        $this->assertFalse($request->isPost());
+        $this->assertSame('/foo', $request->path()->asString());
+        $this->assertTrue($request->hasParameter('x'));
+        $this->assertSame('1', $request->parameterAsString('x'));
     }
 
     public function test_head_request_is_head_and_considered_get_from_superglobals(): void
@@ -55,9 +55,9 @@ final class RealHttpRequestTest extends TestCase
 
         $request = RealHttpRequest::fromSuperglobals();
 
-        self::assertTrue($request->isHead());
-        self::assertTrue($request->isGet());
-        self::assertFalse($request->isPost());
+        $this->assertTrue($request->isHead());
+        $this->assertTrue($request->isGet());
+        $this->assertFalse($request->isPost());
 
         $this->expectException(HttpException::class);
         $request->body();
@@ -71,13 +71,13 @@ final class RealHttpRequestTest extends TestCase
 
         $request = RealHttpRequest::fromSuperglobals();
 
-        self::assertTrue($request->isPost());
-        self::assertSame(['token' => 'abc', 'count' => 3], $request->formData());
+        $this->assertTrue($request->isPost());
+        $this->assertSame(['token' => 'abc', 'count' => 3], $request->formData());
         // php://input is empty in our test environment
-        self::assertSame('', $request->body());
+        $this->assertSame('', $request->body());
         // URL params are still available
-        self::assertTrue($request->hasParameter('track'));
-        self::assertSame(1, $request->parameterAsInt('track'));
+        $this->assertTrue($request->hasParameter('track'));
+        $this->assertSame(1, $request->parameterAsInt('track'));
     }
 
     public function test_throws_when_request_method_missing(): void

@@ -14,17 +14,17 @@ final class RedirectHttpResponseTest extends TestCase
     {
         $response = new TemporaryRedirectHttpResponse('target');
 
-        self::assertSame(['Location: /target'], $response->headers());
-        self::assertSame(302, $response->responseCode());
-        self::assertSame('', $response->content());
+        $this->assertSame(['Location: /target'], $response->headers());
+        $this->assertSame(302, $response->responseCode());
+        $this->assertSame('', $response->content());
     }
 
     public function test_permanent_redirect_sets_location_header_and_status_code(): void
     {
         $response = new PermanentRedirectHttpResponse('elsewhere');
 
-        self::assertSame(['Location: /elsewhere'], $response->headers());
-        self::assertSame(301, $response->responseCode());
-        self::assertSame('', $response->content());
+        $this->assertSame(['Location: /elsewhere'], $response->headers());
+        $this->assertSame(301, $response->responseCode());
+        $this->assertSame('', $response->content());
     }
 }

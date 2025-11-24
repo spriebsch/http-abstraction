@@ -12,62 +12,62 @@ final class FakeHttpRequestTest extends TestCase
     {
         $request = FakeHttpRequest::get('/foo', ['id' => '42', 'q' => 'x']);
 
-        self::assertTrue($request->isGet());
-        self::assertFalse($request->isPost());
-        self::assertSame('/foo', $request->path()->asString());
-        self::assertTrue($request->hasParameter('id'));
-        self::assertSame('42', $request->parameterAsString('id'));
-        self::assertSame(42, $request->parameterAsInt('id'));
-        self::assertSame(42.0, $request->parameterAsFloat('id'));
-        self::assertFalse($request->hasParameter('missing'));
+        $this->assertTrue($request->isGet());
+        $this->assertFalse($request->isPost());
+        $this->assertSame('/foo', $request->path()->asString());
+        $this->assertTrue($request->hasParameter('id'));
+        $this->assertSame('42', $request->parameterAsString('id'));
+        $this->assertSame(42, $request->parameterAsInt('id'));
+        $this->assertSame(42.0, $request->parameterAsFloat('id'));
+        $this->assertFalse($request->hasParameter('missing'));
     }
 
     public function test_head_request_is_head_and_considered_get(): void
     {
         $request = FakeHttpRequest::head('/status');
 
-        self::assertTrue($request->isHead());
-        self::assertTrue($request->isGet());
-        self::assertFalse($request->isPost());
+        $this->assertTrue($request->isHead());
+        $this->assertTrue($request->isGet());
+        $this->assertFalse($request->isPost());
     }
 
     public function test_post_without_body_returns_empty_body(): void
     {
         $request = FakeHttpRequest::post('/submit');
 
-        self::assertTrue($request->isPost());
-        self::assertSame('', $request->body());
+        $this->assertTrue($request->isPost());
+        $this->assertSame('', $request->body());
     }
 
     public function test_post_with_body_returns_body(): void
     {
         $request = FakeHttpRequest::postWithBody('/submit', 'payload');
 
-        self::assertTrue($request->isPost());
-        self::assertSame('payload', $request->body());
-        self::assertSame([], $request->formData());
+        $this->assertTrue($request->isPost());
+        $this->assertSame('payload', $request->body());
+        $this->assertSame([], $request->formData());
     }
 
     public function test_post_with_form_data_sets_form_data_and_has_empty_body(): void
     {
         $request = FakeHttpRequest::postWithFormData('/submit', ['token' => 'abc', 'count' => 3]);
 
-        self::assertTrue($request->isPost());
-        self::assertSame(['token' => 'abc', 'count' => 3], $request->formData());
-        self::assertSame('', $request->body());
+        $this->assertTrue($request->isPost());
+        $this->assertSame(['token' => 'abc', 'count' => 3], $request->formData());
+        $this->assertSame('', $request->body());
     }
 
     public function test_from_creates_post_request_with_parameters_as_form_data(): void
     {
         $request = FakeHttpRequest::from(RequestMethod::POST, new UrlPath('/save'), ['a' => 1, 'b' => 2], 'x');
 
-        self::assertTrue($request->isPost());
-        self::assertSame('/save', $request->path()->asString());
+        $this->assertTrue($request->isPost());
+        $this->assertSame('/save', $request->path()->asString());
         // Parameters are available both as URL parameters and form data
-        self::assertTrue($request->hasParameter('a'));
-        self::assertSame(1, $request->parameterAsInt('a'));
-        self::assertSame(['a' => 1, 'b' => 2], $request->formData());
-        self::assertSame('x', $request->body());
+        $this->assertTrue($request->hasParameter('a'));
+        $this->assertSame(1, $request->parameterAsInt('a'));
+        $this->assertSame(['a' => 1, 'b' => 2], $request->formData());
+        $this->assertSame('x', $request->body());
     }
 
     public function test_from_throws_when_non_post_request_has_body(): void
@@ -91,7 +91,7 @@ final class FakeHttpRequestTest extends TestCase
     {
         $request = FakeHttpRequest::get('/flags', ['on' => 1, 'off' => 0]);
 
-        self::assertTrue($request->parameterAsBool('on'));
-        self::assertFalse($request->parameterAsBool('off'));
+        $this->assertTrue($request->parameterAsBool('on'));
+        $this->assertFalse($request->parameterAsBool('off'));
     }
 }

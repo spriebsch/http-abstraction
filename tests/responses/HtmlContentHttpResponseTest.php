@@ -12,21 +12,21 @@ final class HtmlContentHttpResponseTest extends TestCase
     {
         $response = new HtmlContentHttpResponse('<h1>Hi</h1>');
 
-        self::assertSame(['Content-Type: text/html'], $response->headers());
+        $this->assertSame(['Content-Type: text/html'], $response->headers());
     }
 
     public function test_has_ok_status_code(): void
     {
         $response = new HtmlContentHttpResponse('ok');
 
-        self::assertSame(200, $response->responseCode());
+        $this->assertSame(200, $response->responseCode());
     }
 
     public function test_returns_provided_content(): void
     {
         $response = new HtmlContentHttpResponse('content');
 
-        self::assertSame('content', $response->content());
+        $this->assertSame('content', $response->content());
     }
 
     public function test_send_prints_content(): void
@@ -37,6 +37,6 @@ final class HtmlContentHttpResponseTest extends TestCase
         $response->send();
         $output = ob_get_clean();
 
-        self::assertSame('printed', $output);
+        $this->assertSame('printed', $output);
     }
 }

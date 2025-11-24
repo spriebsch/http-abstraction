@@ -12,35 +12,35 @@ final class UrlPathTest extends TestCase
     {
         $path = new UrlPath('foo');
 
-        self::assertSame('/foo', $path->asString());
+        $this->assertSame('/foo', $path->asString());
     }
 
     public function test_removes_query_string(): void
     {
         $path = new UrlPath('/foo?bar=baz');
 
-        self::assertSame('/foo', $path->asString());
+        $this->assertSame('/foo', $path->asString());
     }
 
     public function test_removes_trailing_slash(): void
     {
         $path = new UrlPath('/foo/');
 
-        self::assertSame('/foo', $path->asString());
+        $this->assertSame('/foo', $path->asString());
     }
 
     public function test_keeps_root_path_as_single_slash(): void
     {
         $path = new UrlPath('/');
 
-        self::assertSame('/', $path->asString());
+        $this->assertSame('/', $path->asString());
     }
 
     public function test_preserves_already_normalized_path(): void
     {
         $path = new UrlPath('/foo');
 
-        self::assertSame('/foo', $path->asString());
+        $this->assertSame('/foo', $path->asString());
     }
 
     public function test_throws_on_double_dots_in_path(): void

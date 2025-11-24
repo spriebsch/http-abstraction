@@ -12,14 +12,14 @@ final class NotFoundHttpResponseTest extends TestCase
     {
         $response = new NotFoundHttpResponse('missing');
 
-        self::assertSame(404, $response->responseCode());
-        self::assertSame([], $response->headers());
+        $this->assertSame(404, $response->responseCode());
+        $this->assertSame([], $response->headers());
     }
 
     public function test_returns_provided_content(): void
     {
         $response = new NotFoundHttpResponse('not found');
 
-        self::assertSame('not found', $response->content());
+        $this->assertSame('not found', $response->content());
     }
 }
