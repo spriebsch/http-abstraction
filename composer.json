@@ -1,6 +1,6 @@
 {
-  "name": "spriebsch/project-template",
-  "description": "A simple template for new projects.",
+  "name": "spriebsch/http-abstraction",
+  "description": "A simple HTTP abstraction that makes your application easily testable.",
   "type": "project",
   "require": {
     "php": ">=8.4"
