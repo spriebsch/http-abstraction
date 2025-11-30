@@ -27,11 +27,7 @@ final class MediaHttpResponse extends AbstractHttpResponse
     {
         return [
             'Content-Type:', // Makes nginx determine the MIME type
-            'X-Accel-Redirect: ' . str_replace(
-                '/media/',
-                '/protected/',
-                $this->url,
-            ),
+            'X-Accel-Redirect: ' . $this->url,
         ];
     }
 }
