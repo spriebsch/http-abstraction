@@ -2,6 +2,8 @@
 
 namespace spriebsch\http;
 
+use RuntimeException;
+
 abstract readonly class AbstractHttpRequest implements HttpRequest
 {
     protected function __construct(
@@ -49,27 +51,27 @@ abstract readonly class AbstractHttpRequest implements HttpRequest
 
     public function hasParameter(string $name): bool
     {
-        return isset($this->urlParameters[$name]);
+        return isset($this->urlParameters[$name]) || isset($this->formData[$name]);
     }
 
     public function parameterAsString(string $name): string
     {
-        return (string) $this->urlParameters[$name];
+        return (string) $this->data($name);
     }
 
     public function parameterAsInt(string $name): int
     {
-        return (int) $this->urlParameters[$name];
+        return (int) $this->data($name);
     }
 
     public function parameterAsFloat(string $name): float
     {
-        return (int) $this->urlParameters[$name];
+        return (int) $this->data($name);
     }
 
     public function parameterAsBool(string $name): bool
     {
-        return (bool) $this->urlParameters[$name];
+        return (bool) $this->data($name);
     }
 
     public function body(): string
@@ -84,5 +86,18 @@ abstract readonly class AbstractHttpRequest implements HttpRequest
     public function formData(): array
     {
         return $this->formData;
+    }
+
+    private function data(string $key): mixed
+    {
+        if (isset($this->formData[$key])) {
+            return $this->formData[$key];
+        }
+
+        if (isset($this->urlParameters[$key])) {
+            return $this->urlParameters[$key];
+        }
+
+        throw new RuntimeException(sprintf('Parameter "%s" not found.', $key));
     }
 }
