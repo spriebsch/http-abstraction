@@ -2,7 +2,7 @@
 
 namespace spriebsch\http;
 
-final class BadRequestHttpResponse extends AbstractHttpResponse
+final class OkHttpResponse extends AbstractHttpResponse
 {
     public function __construct()
     {
