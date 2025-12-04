@@ -6,7 +6,7 @@ namespace spriebsch\http;
 abstract class
 RedirectHttpResponse extends AbstractHttpResponse
 {
-    public function __construct(private readonly string $path)
+    public function __construct(private readonly string $url)
     {
         parent::__construct('');
     }
@@ -14,7 +14,7 @@ RedirectHttpResponse extends AbstractHttpResponse
     public function headers(): array
     {
         return [
-            sprintf('Location: /%s', $this->path),
+            sprintf('Location: %s', $this->url),
         ];
     }
 
