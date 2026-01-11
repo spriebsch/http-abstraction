@@ -55,7 +55,7 @@ If errors occur, fix them.
 After each task, run
 
 ```bash
-php-devbox composer code-coverage
+php-devbox composer code-coverage -- --coverage-text
 ```
 
 to perform code coverage analysis with PHPUnit.
