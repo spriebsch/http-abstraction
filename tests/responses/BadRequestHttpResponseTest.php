@@ -22,11 +22,16 @@ final class BadRequestHttpResponseTest extends TestCase
         $this->assertSame(['Content-Type: text/html'], $response->headers());
     }
 
-    public function test_has_default_content_and_send_prints_it(): void
+    public function test_has_default_content(): void
     {
         $response = new BadRequestHttpResponse();
 
         $this->assertSame('Bad Request', $response->content());
+    }
+
+    public function test_send_prints_content(): void
+    {
+        $response = new BadRequestHttpResponse();
 
         ob_start();
         $response->send();

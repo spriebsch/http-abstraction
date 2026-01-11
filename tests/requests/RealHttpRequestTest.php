@@ -58,7 +58,7 @@ final class RealHttpRequestTest extends TestCase
         $_SERVER['REQUEST_URI'] = $uri;
     }
 
-    public function test_creates_get_request_from_superglobals(): void
+    public function test_is_get_request(): void
     {
         $this->setServer('GET', '/foo?x=1');
         $_GET = ['x' => '1'];
@@ -67,13 +67,53 @@ final class RealHttpRequestTest extends TestCase
         $request = RealHttpRequest::fromSuperglobals();
 
         $this->assertTrue($request->isGet());
+    }
+
+    public function test_is_not_post_request(): void
+    {
+        $this->setServer('GET', '/foo?x=1');
+        $_GET = ['x' => '1'];
+        $_POST = [];
+
+        $request = RealHttpRequest::fromSuperglobals();
+
         $this->assertFalse($request->isPost());
+    }
+
+    public function test_has_path(): void
+    {
+        $this->setServer('GET', '/foo?x=1');
+        $_GET = ['x' => '1'];
+        $_POST = [];
+
+        $request = RealHttpRequest::fromSuperglobals();
+
         $this->assertSame('/foo', $request->path()->asString());
+    }
+
+    public function test_has_parameter(): void
+    {
+        $this->setServer('GET', '/foo?x=1');
+        $_GET = ['x' => '1'];
+        $_POST = [];
+
+        $request = RealHttpRequest::fromSuperglobals();
+
         $this->assertTrue($request->hasParameter('x'));
+    }
+
+    public function test_parameter_as_string(): void
+    {
+        $this->setServer('GET', '/foo?x=1');
+        $_GET = ['x' => '1'];
+        $_POST = [];
+
+        $request = RealHttpRequest::fromSuperglobals();
+
         $this->assertSame('1', $request->parameterAsString('x'));
     }
 
-    public function test_head_request_is_head_and_considered_get_from_superglobals(): void
+    public function test_head_request_is_head(): void
     {
         $this->setServer('HEAD', '/status');
         $_GET = [];
@@ -82,14 +122,43 @@ final class RealHttpRequestTest extends TestCase
         $request = RealHttpRequest::fromSuperglobals();
 
         $this->assertTrue($request->isHead());
+    }
+
+    public function test_head_request_is_considered_get(): void
+    {
+        $this->setServer('HEAD', '/status');
+        $_GET = [];
+        $_POST = [];
+
+        $request = RealHttpRequest::fromSuperglobals();
+
         $this->assertTrue($request->isGet());
+    }
+
+    public function test_head_request_is_not_post(): void
+    {
+        $this->setServer('HEAD', '/status');
+        $_GET = [];
+        $_POST = [];
+
+        $request = RealHttpRequest::fromSuperglobals();
+
         $this->assertFalse($request->isPost());
+    }
+
+    public function test_head_request_body_is_not_available(): void
+    {
+        $this->setServer('HEAD', '/status');
+        $_GET = [];
+        $_POST = [];
+
+        $request = RealHttpRequest::fromSuperglobals();
 
         $this->expectException(HttpException::class);
         $request->body();
     }
 
-    public function test_post_request_uses_post_data_and_body_is_empty_in_cli(): void
+    public function test_post_request_is_post(): void
     {
         $this->setServer('POST', '/submit?track=1');
         $_GET = ['track' => '1'];
@@ -98,11 +167,50 @@ final class RealHttpRequestTest extends TestCase
         $request = RealHttpRequest::fromSuperglobals();
 
         $this->assertTrue($request->isPost());
+    }
+
+    public function test_post_request_has_form_data(): void
+    {
+        $this->setServer('POST', '/submit?track=1');
+        $_GET = ['track' => '1'];
+        $_POST = ['token' => 'abc', 'count' => 3];
+
+        $request = RealHttpRequest::fromSuperglobals();
+
         $this->assertSame(['token' => 'abc', 'count' => 3], $request->formData());
+    }
+
+    public function test_post_request_body_is_empty_in_cli(): void
+    {
+        $this->setServer('POST', '/submit?track=1');
+        $_GET = ['track' => '1'];
+        $_POST = ['token' => 'abc', 'count' => 3];
+
+        $request = RealHttpRequest::fromSuperglobals();
+
         // php://input is empty in our test environment
         $this->assertSame('', $request->body());
-        // URL params are still available
+    }
+
+    public function test_post_request_has_url_parameter(): void
+    {
+        $this->setServer('POST', '/submit?track=1');
+        $_GET = ['track' => '1'];
+        $_POST = ['token' => 'abc', 'count' => 3];
+
+        $request = RealHttpRequest::fromSuperglobals();
+
         $this->assertTrue($request->hasParameter('track'));
+    }
+
+    public function test_post_request_url_parameter_as_int(): void
+    {
+        $this->setServer('POST', '/submit?track=1');
+        $_GET = ['track' => '1'];
+        $_POST = ['token' => 'abc', 'count' => 3];
+
+        $request = RealHttpRequest::fromSuperglobals();
+
         $this->assertSame(1, $request->parameterAsInt('track'));
     }
 

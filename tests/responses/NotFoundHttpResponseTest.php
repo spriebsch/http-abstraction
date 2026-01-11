@@ -8,11 +8,17 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(NotFoundHttpResponse::class)]
 final class NotFoundHttpResponseTest extends TestCase
 {
-    public function test_has_not_found_status_code_and_no_headers(): void
+    public function test_has_not_found_status_code(): void
     {
         $response = new NotFoundHttpResponse('missing');
 
         $this->assertSame(404, $response->responseCode());
+    }
+
+    public function test_has_no_headers(): void
+    {
+        $response = new NotFoundHttpResponse('missing');
+
         $this->assertSame([], $response->headers());
     }
 

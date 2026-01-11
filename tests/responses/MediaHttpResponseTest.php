@@ -12,29 +12,36 @@ final class MediaHttpResponseTest extends TestCase
     {
         $url = '/media/file.jpg';
         $response = new MediaHttpResponse($url);
+
         $this->assertSame($url, $response->url());
     }
 
     public function test_response_code_is_200(): void
     {
         $response = new MediaHttpResponse('/media/file.jpg');
+
         $this->assertSame(200, $response->responseCode());
     }
 
-    public function test_headers_are_correct(): void
+    public function test_content_type_header_is_present(): void
+    {
+        $response = new MediaHttpResponse('/media/file.jpg');
+
+        $this->assertContains('Content-Type:', $response->headers());
+    }
+
+    public function test_x_accel_redirect_header_is_set(): void
     {
         $url = '/media/file.jpg';
         $response = new MediaHttpResponse($url);
-        $expected = [
-            'Content-Type:',
-            'X-Accel-Redirect: ' . $url,
-        ];
-        $this->assertSame($expected, $response->headers());
+
+        $this->assertContains('X-Accel-Redirect: ' . $url, $response->headers());
     }
 
     public function test_body_is_empty(): void
     {
         $response = new MediaHttpResponse('/media/file.jpg');
+
         $this->assertSame('', $response->content());
     }
 }

@@ -10,21 +10,45 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(RedirectHttpResponse::class)]
 final class RedirectHttpResponseTest extends TestCase
 {
-    public function test_temporary_redirect_sets_location_header_and_status_code(): void
+    public function test_temporary_redirect_sets_location_header(): void
     {
         $response = new TemporaryRedirectHttpResponse('/target');
 
         $this->assertSame(['Location: /target'], $response->headers());
+    }
+
+    public function test_temporary_redirect_sets_status_code(): void
+    {
+        $response = new TemporaryRedirectHttpResponse('/target');
+
         $this->assertSame(302, $response->responseCode());
+    }
+
+    public function test_temporary_redirect_content_is_empty(): void
+    {
+        $response = new TemporaryRedirectHttpResponse('/target');
+
         $this->assertSame('', $response->content());
     }
 
-    public function test_permanent_redirect_sets_location_header_and_status_code(): void
+    public function test_permanent_redirect_sets_location_header(): void
     {
         $response = new PermanentRedirectHttpResponse('/elsewhere');
 
         $this->assertSame(['Location: /elsewhere'], $response->headers());
+    }
+
+    public function test_permanent_redirect_sets_status_code(): void
+    {
+        $response = new PermanentRedirectHttpResponse('/elsewhere');
+
         $this->assertSame(301, $response->responseCode());
+    }
+
+    public function test_permanent_redirect_content_is_empty(): void
+    {
+        $response = new PermanentRedirectHttpResponse('/elsewhere');
+
         $this->assertSame('', $response->content());
     }
 }
