@@ -23,6 +23,9 @@ final class MediaHttpResponse extends AbstractHttpResponse
         return 200;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function headers(): array
     {
         return [

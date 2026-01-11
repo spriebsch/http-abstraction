@@ -9,6 +9,9 @@ final class NotFoundHttpResponse extends AbstractHttpResponse
         return 404;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function headers(): array
     {
         return [];

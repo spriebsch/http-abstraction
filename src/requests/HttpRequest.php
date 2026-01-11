@@ -12,6 +12,9 @@ interface HttpRequest
 
     public function path(): UrlPath;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function formData(): array;
 
     public function body(): string;

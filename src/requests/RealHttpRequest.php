@@ -17,18 +17,38 @@ final readonly class RealHttpRequest extends AbstractHttpRequest implements Http
             throw HttpException::serverVariableNotSet($pathKey);
         }
 
-        $requestMethod = RequestMethod::tryFrom($_SERVER[$methodKey]);
+        $method = $_SERVER[$methodKey];
+        if (!is_string($method)) {
+            throw HttpException::serverVariableNotSet($methodKey);
+        }
+
+        $requestMethod = RequestMethod::tryFrom($method);
 
         if ($requestMethod === null) {
-            throw HttpException::unsupportedRequestMethod($_SERVER[$methodKey]);
+            throw HttpException::unsupportedRequestMethod($method);
         }
+
+        $path = $_SERVER[$pathKey];
+        if (!is_string($path)) {
+            throw HttpException::serverVariableNotSet($pathKey);
+        }
+
+        $body = file_get_contents('php://input');
+        if ($body === false) {
+            $body = '';
+        }
+
+        /** @var array<string, mixed> $get */
+        $get = $_GET;
+        /** @var array<string, mixed> $post */
+        $post = $_POST;
 
         return new self(
             $requestMethod,
-            new UrlPath($_SERVER[$pathKey]),
-            $_GET,
-            $_POST,
-            file_get_contents('php://input'),
+            new UrlPath($path),
+            $get,
+            $post,
+            $body,
         );
     }
 }

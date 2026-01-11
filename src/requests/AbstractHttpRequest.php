@@ -6,6 +6,10 @@ use RuntimeException;
 
 abstract readonly class AbstractHttpRequest implements HttpRequest
 {
+    /**
+     * @param array<string, mixed> $urlParameters
+     * @param array<string, mixed> $formData
+     */
     protected function __construct(
         private RequestMethod $method,
         private UrlPath       $path,
@@ -17,7 +21,7 @@ abstract readonly class AbstractHttpRequest implements HttpRequest
         $this->ensureOnlyPostRequestHasBody($method, $body);
     }
 
-    private function ensureOnlyPostRequestHasBody(RequestMethod $method, string $body)
+    private function ensureOnlyPostRequestHasBody(RequestMethod $method, string $body): void
     {
         if ($method !== RequestMethod::POST && $body !== '') {
             throw HttpException::cannotHavePostData($method);
@@ -56,17 +60,35 @@ abstract readonly class AbstractHttpRequest implements HttpRequest
 
     public function parameterAsString(string $name): string
     {
-        return (string) $this->data($name);
+        $data = $this->data($name);
+
+        if (!is_string($data) && !is_numeric($data)) {
+            throw new RuntimeException(sprintf('Parameter "%s" is not a string.', $name));
+        }
+
+        return (string) $data;
     }
 
     public function parameterAsInt(string $name): int
     {
-        return (int) $this->data($name);
+        $data = $this->data($name);
+
+        if (!is_numeric($data)) {
+            throw new RuntimeException(sprintf('Parameter "%s" is not an integer.', $name));
+        }
+
+        return (int) $data;
     }
 
     public function parameterAsFloat(string $name): float
     {
-        return (int) $this->data($name);
+        $data = $this->data($name);
+
+        if (!is_numeric($data)) {
+            throw new RuntimeException(sprintf('Parameter "%s" is not a float.', $name));
+        }
+
+        return (float) $data;
     }
 
     public function parameterAsBool(string $name): bool
@@ -83,6 +105,9 @@ abstract readonly class AbstractHttpRequest implements HttpRequest
         return $this->body;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function formData(): array
     {
         return $this->formData;

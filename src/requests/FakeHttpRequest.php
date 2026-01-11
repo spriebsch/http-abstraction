@@ -4,11 +4,17 @@ namespace spriebsch\http;
 
 final readonly class FakeHttpRequest extends AbstractHttpRequest implements HttpRequest
 {
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public static function get(string $path, array $parameters = []): self
     {
         return new self(RequestMethod::GET, new UrlPath($path), $parameters);
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public static function head(string $path, array $parameters = []): self
     {
         return new self(RequestMethod::HEAD, new UrlPath($path), $parameters);
@@ -24,11 +30,17 @@ final readonly class FakeHttpRequest extends AbstractHttpRequest implements Http
         return new self(RequestMethod::POST, new UrlPath($path), [], [], $body);
     }
 
+    /**
+     * @param array<string, mixed> $formData
+     */
     public static function postWithFormData(string $path, array $formData = []): self
     {
         return new self(RequestMethod::POST, new UrlPath($path), [], $formData);
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public static function from(RequestMethod $method, UrlPath $path, array $parameters = [], string $body = ''): self
     {
         return new self($method, $path, $parameters, $parameters, $body);

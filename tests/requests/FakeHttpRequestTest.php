@@ -97,4 +97,36 @@ final class FakeHttpRequestTest extends TestCase
         $this->assertTrue($request->parameterAsBool('on'));
         $this->assertFalse($request->parameterAsBool('off'));
     }
+
+    public function test_throws_when_parameter_not_found(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $request = FakeHttpRequest::get('/x');
+        $request->parameterAsString('missing');
+    }
+
+    public function test_throws_when_parameter_is_not_a_string(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $request = FakeHttpRequest::get('/x', ['key' => []]);
+        $request->parameterAsString('key');
+    }
+
+    public function test_throws_when_parameter_is_not_an_int(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $request = FakeHttpRequest::get('/x', ['key' => 'not-a-number']);
+        $request->parameterAsInt('key');
+    }
+
+    public function test_throws_when_parameter_is_not_a_float(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $request = FakeHttpRequest::get('/x', ['key' => 'not-a-number']);
+        $request->parameterAsFloat('key');
+    }
 }

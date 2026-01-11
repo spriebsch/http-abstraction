@@ -14,6 +14,9 @@ final class OkHttpResponse extends AbstractHttpResponse
         return 204;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function headers(): array
     {
         return [];

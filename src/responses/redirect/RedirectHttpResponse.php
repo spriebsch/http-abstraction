@@ -11,6 +11,9 @@ RedirectHttpResponse extends AbstractHttpResponse
         parent::__construct('');
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function headers(): array
     {
         return [

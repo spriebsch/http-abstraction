@@ -14,6 +14,9 @@ final class BadRequestHttpResponse extends AbstractHttpResponse
         return 400;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function headers(): array
     {
         return ['Content-Type: text/html'];

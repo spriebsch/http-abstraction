@@ -11,8 +11,11 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(UrlPath::class)]
 final class RealHttpRequestTest extends TestCase
 {
+    /** @var array<mixed> */
     private array $serverBackup = [];
+    /** @var array<mixed> */
     private array $getBackup = [];
+    /** @var array<mixed> */
     private array $postBackup = [];
 
     protected function setUp(): void

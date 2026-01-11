@@ -26,5 +26,8 @@ abstract class AbstractHttpResponse implements HttpResponse
 
     abstract public function responseCode(): int;
 
+    /**
+     * @return array<int, string>
+     */
     abstract public function headers(): array;
 }
