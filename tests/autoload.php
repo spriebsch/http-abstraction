@@ -10,9 +10,12 @@ spl_autoload_register(
                 'spriebsch\\http\\badrequesthttpresponsetest' => '/responses/BadRequestHttpResponseTest.php',
                 'spriebsch\\http\\fakehttprequesttest' => '/requests/FakeHttpRequestTest.php',
                 'spriebsch\\http\\htmlcontenthttpresponsetest' => '/responses/HtmlContentHttpResponseTest.php',
+                'spriebsch\\http\\mediahttpresponsetest' => '/responses/MediaHttpResponseTest.php',
                 'spriebsch\\http\\notfoundhttpresponsetest' => '/responses/NotFoundHttpResponseTest.php',
+                'spriebsch\\http\\okhttpresponsetest' => '/responses/OkHttpResponseTest.php',
                 'spriebsch\\http\\realhttprequesttest' => '/requests/RealHttpRequestTest.php',
                 'spriebsch\\http\\redirecthttpresponsetest' => '/responses/RedirectHttpResponseTest.php',
+                'spriebsch\\http\\requestmethodtest' => '/requests/RequestMethodTest.php',
                 'spriebsch\\http\\urlpathtest' => '/requests/UrlPathTest.php'
             );
         }

@@ -2,6 +2,15 @@
 
 namespace spriebsch\http;
 
+function file_get_contents(string $filename): string|false
+{
+    if (isset($GLOBALS['file_get_contents_return_false']) && $GLOBALS['file_get_contents_return_false'] === true) {
+        return false;
+    }
+
+    return \file_get_contents($filename);
+}
+
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -30,6 +39,17 @@ final class RealHttpRequestTest extends TestCase
         $_SERVER = $this->serverBackup;
         $_GET = $this->getBackup;
         $_POST = $this->postBackup;
+        unset($GLOBALS['file_get_contents_return_false']);
+    }
+
+    public function test_handles_file_get_contents_failure(): void
+    {
+        $this->setServer('POST', '/');
+        $GLOBALS['file_get_contents_return_false'] = true;
+
+        $request = RealHttpRequest::fromSuperglobals();
+
+        $this->assertSame('', $request->body());
     }
 
     private function setServer(string $method, string $uri): void
@@ -95,10 +115,28 @@ final class RealHttpRequestTest extends TestCase
         RealHttpRequest::fromSuperglobals();
     }
 
+    public function test_throws_when_request_method_is_not_a_string(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = ['GET'];
+        $_SERVER['REQUEST_URI'] = '/x';
+
+        $this->expectException(HttpException::class);
+        RealHttpRequest::fromSuperglobals();
+    }
+
     public function test_throws_when_request_uri_missing(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
         unset($_SERVER['REQUEST_URI']);
+
+        $this->expectException(HttpException::class);
+        RealHttpRequest::fromSuperglobals();
+    }
+
+    public function test_throws_when_request_uri_is_not_a_string(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REQUEST_URI'] = ['/x'];
 
         $this->expectException(HttpException::class);
         RealHttpRequest::fromSuperglobals();
