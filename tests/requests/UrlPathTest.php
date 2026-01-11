@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(UrlPath::class)]
+#[CoversClass(HttpException::class)]
 final class UrlPathTest extends TestCase
 {
     public function test_adds_leading_slash_when_missing(): void

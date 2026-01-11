@@ -3,9 +3,12 @@
 namespace spriebsch\http;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(FakeHttpRequest::class)]
+#[CoversClass(HttpException::class)]
+#[UsesClass(UrlPath::class)]
 final class FakeHttpRequestTest extends TestCase
 {
     public function test_creates_get_request_with_parameters(): void

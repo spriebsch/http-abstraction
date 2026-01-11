@@ -3,9 +3,12 @@
 namespace spriebsch\http;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(RealHttpRequest::class)]
+#[CoversClass(HttpException::class)]
+#[UsesClass(UrlPath::class)]
 final class RealHttpRequestTest extends TestCase
 {
     private array $serverBackup = [];
